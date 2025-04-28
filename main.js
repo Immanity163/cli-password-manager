@@ -75,7 +75,8 @@ function main() {
     while (true) {
         console.log('\n1. Add password');
         console.log('2. Get password');
-        console.log('3. Delete password');
+        console.log('3. Change password');
+        console.log('4. Delete password');
         const choice = readlineSync.question('Select an action: ');
 
         if (choice === '1') {
@@ -95,6 +96,20 @@ function main() {
         } else if (choice === '3') {
             const allservices = Object.keys(passwords);
             const index = readlineSync.keyInSelect(allservices, 'Select the service');
+            const password = readlineSync.question('New password: ');
+
+            if (readlineSync.keyInYN(`Are you sure you want to change password to ${allservices[index]}\n`)){
+                passwords[allservices[index]] = password;
+                savePasswords(passwords, masterPassword);
+                console.log('Password changed.');
+            }
+            else {
+                console.log('Password change cancelled')
+            }
+        } else if (choice === '4') {
+            const allservices = Object.keys(passwords);
+            const index = readlineSync.keyInSelect(allservices, 'Select the service');
+
             if (passwords[allservices[index]]) {
                 if (readlineSync.keyInYN(`Are you sure you want to delete password to ${allservices[index]}\n`)){
                     delete passwords[allservices[index]];
